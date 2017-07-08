@@ -1,0 +1,16 @@
+        LI R8, 100h 
+        ADDI R9, R8, 4 
+        LI R2, 0 
+        LI R3, 0 
+        LI R4, 1 
+        LW R1, 0(R8) 
+        LW R0, 0(R9) 
+LOOP:   ANDI R6, R2, 1 
+        BEQ R6, R0, EVEN 
+ODD:    ADDI R3, R3, 1 
+        J COMMON 
+EVEN:   MULTI R4, R4, 2 
+        ADD R10, R4, R4 
+COMMON: ADDI R2, R2, 1 
+        BNE R2, R1, LOOP 
+        HLT 
