@@ -54,7 +54,7 @@ public class simulator {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         
-        System.out.println("Enter in: \"instruction file, data file, output file, [-p]\"");
+        System.out.println("Enter: \"instruction file, data file, output file, [-p]\"");
         System.out.println("For example: inst.txt, data.txt, out.txt, -p");
         System.out.println("\"-p\" is optional to show pipeline scheduling instead of clock cycle stages.\n");
         System.out.println("This simulator supports instructions:\n"
@@ -72,7 +72,6 @@ public class simulator {
         }
         
         String[] params = answer.split(",\\s*");
-        
         String insFile = params[0];
         String datFile = params[1];
         String outFile = params[2];
@@ -84,11 +83,11 @@ public class simulator {
             
             MipsCpu cpu = new MipsCpu(commands, originals, words);
             
-            if (! Files.exists(Paths.get(outFile)))
+            if (! Files.exists(Paths.get(outFile))) {
                 Files.createFile(Paths.get(outFile));
+            }
             
-            
-            
+            // Second argument is true if user entered '-p'
             cpu.start(outFile, params.length == 4 && params[3].equals("-p"));
         } catch (IOException | UnsupportedOperationException e) {
             System.err.println(e.getMessage());
@@ -142,15 +141,12 @@ public class simulator {
         return lines.toArray(new String[lines.size()][]);
     }
     //-------------------------------------------------------------------------
-    private static void verifySyntax(String inst) 
-            throws UnsupportedOperationException 
-    {
+    private static void verifySyntax(String inst) throws UnsupportedOperationException {
         /*
             Ensures that the instruction's syntax is correct. Does not
             check if labels in branching instructions correspond to an
             actual label.
         */
-        
         String noLabel = LABELP.matcher(inst).replaceFirst("");
         String name = ALL_AFT_SPC.matcher(noLabel).replaceFirst("");
         
